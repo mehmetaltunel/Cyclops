@@ -1,12 +1,12 @@
-# Göz Fare / Eye Mouse
+# Cyclops
 
-**Türkçe** | [English](#eye-mouse)
+**Türkçe** | [English](#cyclops-1)
 
 ---
 
 ## Türkçe
 
-**Bakışla kontrol edilen fare uygulaması** - Gözlerinizle bilgisayarınızı kontrol edin!
+**Cyclops** - Gözlerinizle bilgisayarınızı kontrol edin!
 
 [![Son Sürümü İndir](https://img.shields.io/github/v/release/mehmetaltunel/EyeMouse?label=Son%20Sürümü%20İndir&style=for-the-badge&color=blue)](https://github.com/mehmetaltunel/EyeMouse/releases/latest)
 
@@ -22,7 +22,7 @@
 
 **Windows (.exe) veya macOS (.dmg) indirmek için:**
 1. [Releases](https://github.com/mehmetaltunel/EyeMouse/releases/latest) sayfasına gidin.
-2. İşletim sisteminize uygun dosyayı indirin (`.exe` veya `.dmg`).
+2. İşletim sisteminize uygun dosyayı indirin (`Cyclops_Windows.exe` veya `Cyclops_macOS.dmg`).
 3. Çift tıklayıp çalıştırın. Hepsi bu kadar!
 
 ### Geliştirici Kurulumu (Python)
@@ -36,7 +36,26 @@ python run.py
 
 ---
 
-## Eye Mouse
+## 🛠️ Sorun Giderme / Troubleshooting
+
+### Windows
+**Uygulama açılmadan kapanıyorsa:**
+1. Klasörde `hata_logu.txt` dosyası oluşmuş mu bakın.
+2. `Microsoft Visual C++ Redistributable` yüklü olduğundan emin olun.
+3. Yönetici olarak çalıştırmayı deneyin.
+
+### macOS
+**"Dosya hasarlı" veya "Açılamıyor" hatası alırsanız:**
+Apple güvenliği bazen internetten indirilen uygulamaları engeller. Terminal'i açıp şu komutu uygulayın:
+
+```bash
+xattr -cr /Applications/Cyclops.app
+# Veya uygulamayı nereye koyduysanız o yolu yazın
+```
+
+---
+
+## Cyclops
 
 **Gaze-controlled mouse application** - Control your computer with your eyes!
 
@@ -51,7 +70,7 @@ python run.py
 
 **To download Windows (.exe) or macOS (.dmg):**
 1. Go to the [Releases](https://github.com/mehmetaltunel/EyeMouse/releases/latest) page.
-2. Download the file for your OS (`.exe` or `.dmg`).
+2. Download the file for your OS (`Cyclops_Windows.exe` or `Cyclops_macOS.dmg`).
 3. Double click to run. That's it!
 
 ### Developer Setup (Python)

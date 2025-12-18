@@ -39,7 +39,7 @@ jobs:
         cat src/version.py
 
     - name: Build with PyInstaller
-      run: pyinstaller GozFare.spec --clean --noconfirm
+      run: pyinstaller Cyclops.spec --clean --noconfirm
 
     # --- macOS Specific Steps ---
     - name: Create DMG (macOS)
@@ -47,15 +47,15 @@ jobs:
       run: |
         npm install -g create-dmg
         mkdir -p dist/dmg
-        create-dmg dist/GozFare.app dist/dmg || true
-        mv dist/dmg/*.dmg dist/GozFare_macOS.dmg
+        create-dmg dist/Cyclops.app dist/dmg || true
+        mv dist/dmg/*.dmg dist/Cyclops_macOS.dmg
 
     # --- Windows Specific Steps ---
     - name: Rename EXE (Windows)
       if: matrix.os == 'windows-latest'
       run: |
         cd dist
-        ren GozFare.exe GozFare_Windows.exe
+        ren Cyclops.exe Cyclops_Windows.exe
 
     # --- Upload Artifacts to Release ---
     - name: Upload to Latest Release

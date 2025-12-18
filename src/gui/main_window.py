@@ -9,10 +9,10 @@ import numpy as np
 from typing import Optional
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, 
-    QLabel, QPushButton, QSlider, QGroupBox, QComboBox
+    QLabel, QPushButton, QSlider, QGroupBox, QComboBox, QMessageBox
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QThread, QSize, QEvent
-from PyQt6.QtGui import QImage, QPixmap, QPalette, QColor, QFont, QKeySequence, QShortcut
+from PyQt6.QtGui import QImage, QPixmap, QPalette, QColor, QFont, QKeySequence, QShortcut, QIcon
 from pynput import keyboard
 
 import sys
@@ -26,6 +26,7 @@ from src.core.mouse_controller import MouseController
 from src.core.calibration import Calibrator, GazeQuality
 from src.utils.camera_utils import get_available_cameras
 from src.version import __version__
+from src.utils.permissions import check_accessibility_permission, open_accessibility_settings
 
 
 class CameraWorker(QThread):
@@ -411,6 +412,9 @@ class MainWindow(QMainWindow):
         self._setup_ui()
         self._setup_shortcuts()
         
+        # Check permissions (macOS)
+        self._check_permissions()
+        
         # Start camera
         self.camera_worker = CameraWorker(self.config)
         self.camera_worker.frame_ready.connect(self._on_frame)
@@ -424,11 +428,15 @@ class MainWindow(QMainWindow):
         self.hotkeys_worker.start()
         
     def _setup_ui(self):
-        self.setWindowTitle(f"Göz Fare v{__version__}")
+        self.setWindowTitle(f"Cyclops v{__version__}")
         self.setFixedSize(500, 700)  # Increased size further for comfort
         
         # Dark theme
         self.setStyleSheet(self._get_stylesheet())
+        
+        # Set window icon
+        icon_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "assets", "icons", "logo.png")
+        self.setWindowIcon(QIcon(icon_path))
         
         central = QWidget()
         self.setCentralWidget(central)
@@ -437,7 +445,7 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(16, 16, 16, 16)
         
         # Header
-        header = QLabel("Göz Fare")
+        header = QLabel("Cyclops")
         header.setObjectName("header")
         header.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(header)
@@ -819,6 +827,22 @@ class MainWindow(QMainWindow):
         self.calibration_overlay.calibration_complete.connect(self._on_calibration_complete)
         self.calibration_overlay.show()
         
+    def _check_permissions(self):
+        """Baslangicta gerekli izinleri kontrol et"""
+        if not check_accessibility_permission():
+            msg = QMessageBox(self)
+            msg.setWindowTitle("İzin Gerekli")
+            msg.setText("Göz Fare'nin çalışabilmesi için 'Erişilebilirlik' izni gerekiyor.\n\nEğer izin vermezsen fareyi hareket ettiremem.")
+            msg.setIcon(QMessageBox.Icon.Warning)
+            
+            btn_settings = msg.addButton("Ayarları Aç", QMessageBox.ButtonRole.ActionRole)
+            btn_ignore = msg.addButton("Yine de Devam Et", QMessageBox.ButtonRole.RejectRole)
+            
+            msg.exec()
+            
+            if msg.clickedButton() == btn_settings:
+                open_accessibility_settings()
+
     def _on_calibration_complete(self):
         self.calibrator.save("calibration.json")
         self._update_calibration_status()

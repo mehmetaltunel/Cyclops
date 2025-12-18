@@ -1,6 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
-Göz Fare - PyInstaller Build Spec
+Cyclops - PyInstaller Build Spec
 GitHub Actions için yapılandırma
 """
 
@@ -56,7 +56,7 @@ if sys.platform == 'darwin':
         a.scripts,
         [],
         exclude_binaries=True,
-        name='GozFare',
+        name='Cyclops',
         debug=False,
         bootloader_ignore_signals=False,
         strip=False,
@@ -76,13 +76,13 @@ if sys.platform == 'darwin':
         strip=False,
         upx=True,
         upx_exclude=[],
-        name='GozFare',
+        name='Cyclops',
     )
     app = BUNDLE(
         coll,
-        name='GozFare.app',
-        icon=None,
-        bundle_identifier='com.mehmetaltunel.gozfare',
+        name='Cyclops.app',
+        icon='assets/icons/logo.png',
+        bundle_identifier='com.mehmetaltunel.cyclops',
         info_plist={
             'NSCameraUsageDescription': 'Göz takibi için kamera erişimi gerekli.',
             'NSHighResolutionCapable': True
@@ -97,7 +97,7 @@ else:
         a.zipfiles,
         a.datas,
         [],
-        name='GozFare',
+        name='Cyclops',
         debug=False,
         bootloader_ignore_signals=False,
         strip=False,
@@ -110,4 +110,5 @@ else:
         target_arch=None,
         codesign_identity=None,
         entitlements_file=None,
+        icon='assets/icons/logo.png',
     )
