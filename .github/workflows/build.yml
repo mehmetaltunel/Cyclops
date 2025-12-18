@@ -58,12 +58,12 @@ jobs:
         ren Cyclops.exe Cyclops_Windows.exe
 
     # --- Upload Artifacts to Release ---
-    - name: Upload to Latest Release
+    - name: Create Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/') == false
       with:
-        name: Latest Build (v1.0.0.${{ github.run_number }})
-        tag_name: latest
+        name: Release v1.0.0.${{ github.run_number }}
+        tag_name: v1.0.0.${{ github.run_number }}
         files: |
           dist/*.exe
           dist/*.dmg

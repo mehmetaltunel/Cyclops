@@ -38,8 +38,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        'PyQt5', 'tkinter', 'torch', 'tensorflow', 'matplotlib', 'scipy', 'sklearn',
-        'cv2.cv2', 'opencv-python' 
+        'PyQt5', 'tkinter', 'torch', 'tensorflow', 'matplotlib', 'scipy', 'sklearn'
     ],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
