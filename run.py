@@ -16,29 +16,27 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         import traceback
-        # Log dosyasini uygulamanin yanina kaydet
-        if getattr(sys, 'frozen', False):
-            # Exe ise exe'nin yani
-            application_path = os.path.dirname(sys.executable)
-            # macOS .app icindeyse bozulabilir, ama kullanici bunu istiyor
-        else:
-            # Script ise script yani
-            application_path = os.path.dirname(os.path.abspath(__file__))
-            
-        log_path = os.path.join(application_path, "Cyclops_Error_Log.txt")
+        error_msg = f"HATA OLUSTU:\n{str(e)}\n\nDETAYLAR:\n{traceback.format_exc()}"
         
-        # Hata dosyasina yaz
-        with open(log_path, "w", encoding="utf-8") as f:
-            f.write(error_msg)
-            
-        # Eger PyQt yukluyse popup goster (GUI cokmeden once)
         try:
-            from PyQt6.QtWidgets import QApplication, QMessageBox
-            if QApplication.instance():
-                QMessageBox.critical(None, "Kritik Hata", f"Uygulama coktu!\nHata raporu kaydedildi:\n{log_path}\n\nHata: {str(e)}")
-        except:
-            pass
+            # Log dosyasini KULLANICI ANA DIZININE kaydet (En guvenli ve izin sorunu olmayan yer)
+            home_path = os.path.expanduser("~")
+            log_path = os.path.join(home_path, "Cyclops_DEBUG.txt")
+            
+            with open(log_path, "w", encoding="utf-8") as f:
+                f.write(error_msg)
+                
+            print(f"Log dosyasina yazildi: {log_path}")
+                
+            # Eger PyQt yukluyse popup goster
+            try:
+                from PyQt6.QtWidgets import QApplication, QMessageBox
+                if QApplication.instance():
+                    QMessageBox.critical(None, "Kritik Hata", f"Uygulama coktu!\nHata logu şuraya kaydedildi:\n{log_path}\n\nHata: {str(e)}")
+            except:
+                pass
+        except Exception as log_error:
+            print(f"KRITIK: Log yazarken hata oldu: {log_error}")
+            print(error_msg)
         
-        # Konsola da yaz
-        print(error_msg)
         sys.exit(1)
